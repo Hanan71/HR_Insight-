@@ -8,34 +8,11 @@
 
 
 ---
-<div align="center">
-  <table>
-    <tr>
-      <td align="center" valign="middle">
-        <img width="400" alt="HR Insight Screenshot 1" src="https://github.com/user-attachments/assets/e53e1552-882a-47aa-8b61-c2f1069017e5" />
-      </td>
-      <td align="center" valign="middle">
-        <img width="400" alt="HR Insight Screenshot 2" src="https://github.com/user-attachments/assets/0cf6f2fe-9848-4a69-af96-d6cf5a589c08" />
-      </td>
-    </tr>
-    <tr>
-      <td align="center" valign="middle">
-        <img width="400" alt="HR Insight Screenshot 3" src="https://github.com/user-attachments/assets/ff9f6d5f-8a90-4df0-9211-4f9d464b6ab1" />
-      </td>
-      <td align="center" valign="middle">
-        <img width="400" alt="HR Insight Screenshot 4" src="https://github.com/user-attachments/assets/2f2cb67f-bda6-4f8b-bf26-b30ccb242725" />
-      </td>
-    </tr>
-    <tr>
-      <td align="center" valign="middle">
-        <img width="400" alt="HR Insight Screenshot 5" src="https://github.com/user-attachments/assets/89222dbd-9bdd-45e2-8244-cc9e85a5e063" />
-      </td>
-      <td align="center" valign="middle">
-        <img width="400" alt="HR Insight Screenshot 6" src="https://github.com/user-attachments/assets/550363d5-0eb2-41ec-bbd4-216c99dafc1b" />
-      </td>
-    </tr>
-  </table>
-</div>
+<p align="center">
+  <a href="https://try.ka.nz/certificate/KANZ-GWR-738BBDEFCD?certificate_type=gwr2&recipient_name=%D8%AD%D9%86%D8%A7%D9%86+%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%84%D9%87&issue_date=July+15%2C+2026&certificate_id=KANZ-GWR-738BBDEFCD&lang=ar"><img src="https://img.shields.io/badge/Guinness%20World%20Records-Record%20Participant-FF8C00?style=for-the-badge&logo=target&logoColor=FF8C00&labelColor=FFFFFF" alt="Guinness World Record" /></a>
+  &nbsp;&nbsp;
+  <a href="https://try.ka.nz/ai/hananeabdallah"><img src="https://img.shields.io/badge/Kanz-Developer%20Profile-1E7E34?style=for-the-badge&logo=googlechrome&logoColor=white&labelColor=70C040" alt="Profile" /></a>
+</p>
 
 ---
 
