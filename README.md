@@ -6,13 +6,38 @@
   <b>An AI-powered HR intelligence platform designed to assess employee well-being, mitigate burnout, and optimize workforce roles.</b>
 </p>
 
-<img width="1094" height="703" alt="Screenshot 2026-09-04 at 9 00 43 PM" src="https://github.com/user-attachments/assets/e53e1552-882a-47aa-8b61-c2f1069017e5" />
-<img width="1096" height="707" alt="Screenshot 2026-09-04 at 9 01 33 PM" src="https://github.com/user-attachments/assets/0cf6f2fe-9848-4a69-af96-d6cf5a589c08" />
-<img width="1092" height="706" alt="Screenshot 2026-09-04 at 9 01 51 PM" src="https://github.com/user-attachments/assets/ff9f6d5f-8a90-4df0-9211-4f9d464b6ab1" />
-<img width="1095" height="700" alt="Screenshot 2026-09-04 at 9 03 33 PM" src="https://github.com/user-attachments/assets/2f2cb67f-bda6-4f8b-bf26-b30ccb242725" />
-<img width="1094" height="701" alt="Screenshot 2026-09-04 at 9 02 17 PM" src="https://github.com/user-attachments/assets/89222dbd-9bdd-45e2-8244-cc9e85a5e063" />
-<img width="1086" height="705" alt="Screenshot 2026-09-04 at 9 03 52 PM" src="https://github.com/user-attachments/assets/550363d5-0eb2-41ec-bbd4-216c99dafc1b" />
 
+---
+<div align="center">
+  <table>
+    <tr>
+      <td align="center" valign="middle">
+        <img width="400" alt="HR Insight Screenshot 1" src="https://github.com/user-attachments/assets/e53e1552-882a-47aa-8b61-c2f1069017e5" />
+      </td>
+      <td align="center" valign="middle">
+        <img width="400" alt="HR Insight Screenshot 2" src="https://github.com/user-attachments/assets/0cf6f2fe-9848-4a69-af96-d6cf5a589c08" />
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle">
+        <img width="400" alt="HR Insight Screenshot 3" src="https://github.com/user-attachments/assets/ff9f6d5f-8a90-4df0-9211-4f9d464b6ab1" />
+      </td>
+      <td align="center" valign="middle">
+        <img width="400" alt="HR Insight Screenshot 4" src="https://github.com/user-attachments/assets/2f2cb67f-bda6-4f8b-bf26-b30ccb242725" />
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="middle">
+        <img width="400" alt="HR Insight Screenshot 5" src="https://github.com/user-attachments/assets/89222dbd-9bdd-45e2-8244-cc9e85a5e063" />
+      </td>
+      <td align="center" valign="middle">
+        <img width="400" alt="HR Insight Screenshot 6" src="https://github.com/user-attachments/assets/550363d5-0eb2-41ec-bbd4-216c99dafc1b" />
+      </td>
+    </tr>
+  </table>
+</div>
+
+---
 
 <!-- Badges Section -->
 <p align="center">
