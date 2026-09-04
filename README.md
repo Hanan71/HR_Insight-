@@ -8,11 +8,12 @@
         </p>
       </td>
       <td align="center" valign="middle">
-        <img width="300" alt="HR Insight Logo" src="Cognizant_Guinness_World_Records_Holder-removebg-preview" src="https://github.com/user-attachments/assets/23e02e94-7a13-46ce-8173-4c937d7b2ddf" />
+        <img width="300" alt="HR Insight Logo" src="https://github.com/user-attachments/assets/23e02e94-7a13-46ce-8173-4c937d7b2ddf" />
       </td>
     </tr>
   </table>
 </div>
+
 
 
 
