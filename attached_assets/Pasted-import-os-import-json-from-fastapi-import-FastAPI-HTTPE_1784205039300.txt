@@ -1,0 +1,73 @@
+import os
+import json
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+import google.generativeai as genai
+
+app = FastAPI()
+
+# تفعيل CORS لكي يستطيع موقعك التحدث مع الباكيند بدون مشاكل أمنية
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# إعداد مفتاح Gemini من الـ Secrets
+api_key = os.environ.get("GEMINI_API_KEY")
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel('gemini-1.5-flash')
+
+class EmployeeDataInput(BaseModel):
+    raw_text: str # النص أو البيانات التجريبية للموظف التي سيدخلها المستخدم أو يختارها
+
+@app.post("/analyze")
+async def analyze_employee(data: EmployeeDataInput):
+    try:
+        prompt = f"""
+        You are an advanced Enterprise Workforce Intelligence AI. 
+        Analyze the provided raw data of an employee (such as emails, code commits, or daily logs).
+        
+        Provide a comprehensive analysis matching the requirements in Arabic.
+        
+        You MUST respond with a valid JSON object matching this schema exactly:
+        {{
+          "summary": "تلخيص احترافي لإنجازات الموظف مؤخراً بأسلوب لائق ومختصر",
+          "skills": ["مهارة 1", "مهارة 2", "مهارة 3"],
+          "burnout": {{
+            "score": 85, // رقم من 100
+            "status": "High / Medium / Low",
+            "signals": ["إشارة 1", "إشارة 2"]
+          }},
+          "role_drift": {{
+            "detected": true, // false or true
+            "official_role": "المسمى الرسمي الحالي",
+            "actual_role": "الدور الفعلي المكتشف",
+            "reason": "شرح مختصر باللغة العربية"
+          }},
+          "thinking_style": {{
+            "category": "Innovative Contributor", // Or other like: Analytical Executor
+            "explanation": "تحليل لأسلوب تفكيره بالعربية"
+          }},
+          "smart_decisions": {{
+            "recommended_task": "مهمة مقترحة",
+            "career_development": "تطوير مساره",
+            "alert": "تنبيه ذكي"
+          }}
+        }}
+
+        Employee Raw Data:
+        {data.raw_text}
+        """
+        
+        response = model.generate_content(
+            prompt,
+            generation_config={"response_mime_type": "application/json"}
+        )
+        return json.loads(response.text)
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
