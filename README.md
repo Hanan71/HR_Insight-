@@ -1,6 +1,6 @@
 <div align="center">
 
-#  HR Insight | بصيرة الموارد البشرية
+#  HR Insight | بصيرة الموارد البشرية ✨ 
 
 <p align="center">
   <b>An AI-powered HR intelligence platform designed to assess employee well-being, mitigate burnout, and optimize workforce roles.</b>
