@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>HR Insight Dashboard</title>
+    <meta name="description" content="HR Insight Dashboard — built on Replit. Update this description to reflect the app." />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="HR Insight Dashboard" />
+    <meta property="og:description" content="HR Insight Dashboard — built on Replit. Update this description to reflect the app." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="HR Insight Dashboard" />
+    <meta name="twitter:description" content="HR Insight Dashboard — built on Replit. Update this description to reflect the app." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- ── ElevenLabs AI Widget: draggable, role-aware, post-login only ─── -->
+    <style>
+      /* Hidden until xi:login event fires */
+      #xi-root {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 99999;         /* above all app layers */
+        display: none;          /* shown by JS on login */
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px;
+        touch-action: none;
+        user-select: none;
+        filter: drop-shadow(0 8px 24px rgba(0,0,0,.5));
+      }
+      #xi-root.xi-dragging { cursor: grabbing !important; }
+
+      /* Drag handle pill */
+      #xi-handle {
+        display: flex; align-items: center; gap: 5px;
+        padding: 4px 10px;
+        background: rgba(18,18,28,.88);
+        border: 1px solid rgba(99,102,241,.35);
+        border-radius: 20px;
+        color: #71717a;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 10px; letter-spacing: .03em;
+        backdrop-filter: blur(10px);
+        cursor: grab;
+        transition: border-color .2s, color .2s;
+        white-space: nowrap;
+      }
+      #xi-handle:hover { border-color: rgba(99,102,241,.6); color: #c4b5fd; }
+
+      /* Role badge on handle */
+      #xi-role-badge {
+        font-size: 9px; padding: 1px 6px;
+        border-radius: 20px;
+        background: rgba(99,102,241,.18);
+        border: 1px solid rgba(99,102,241,.3);
+        color: #a5b4fc;
+        text-transform: uppercase; letter-spacing: .04em;
+      }
+
+      /* Usage guide card */
+      #xi-guide {
+        width: 240px;
+        background: rgba(12,12,20,.96);
+        border: 1px solid rgba(99,102,241,.28);
+        border-radius: 14px;
+        padding: 14px 15px 11px;
+        box-shadow: 0 4px 32px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.04);
+        backdrop-filter: blur(18px);
+        font-family: 'Inter', system-ui, sans-serif;
+        color: #e4e4e7;
+        transition: opacity .22s, transform .22s;
+      }
+      #xi-guide.xi-hidden { opacity: 0; pointer-events: none; transform: translateY(6px) scale(.97); }
+
+      .xi-guide-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+      #xi-guide-title { font-size: 12px; font-weight: 600; color: #c4b5fd; }
+      #xi-close {
+        background: none; border: none; color: #52525b; font-size: 13px;
+        line-height: 1; cursor: pointer; padding: 2px 5px; border-radius: 4px;
+        transition: color .15s, background .15s; font-family: inherit;
+      }
+      #xi-close:hover { color: #e4e4e7; background: rgba(255,255,255,.07); }
+
+      #xi-guide-desc {
+        font-size: 11px; color: #a1a1aa; line-height: 1.55; margin-bottom: 9px;
+      }
+      #xi-guide-desc strong { color: #c4b5fd; }
+
+      #xi-guide-topics { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 9px; }
+      .xi-tag {
+        font-size: 10px; padding: 2px 7px; border-radius: 20px;
+        border: 1px solid rgba(99,102,241,.22); background: rgba(99,102,241,.1);
+        color: #a5b4fc; white-space: nowrap;
+      }
+
+      #xi-guide-note {
+        font-size: 10px; color: #3f3f46; line-height: 1.5;
+        border-top: 1px solid rgba(255,255,255,.05); padding-top: 8px;
+      }
+      #xi-guide-note em { color: #52525b; font-style: normal; }
+
+      /* Re-open info button */
+      #xi-info {
+        width: 22px; height: 22px; border-radius: 50%;
+        background: rgba(18,18,28,.88); border: 1px solid rgba(99,102,241,.3);
+        color: #6366f1; font-size: 12px;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; backdrop-filter: blur(10px);
+        transition: border-color .2s, color .2s, background .2s;
+        line-height: 1; padding: 0; font-family: system-ui;
+      }
+      #xi-info:hover { border-color: rgba(99,102,241,.6); color: #a5b4fc; background: rgba(99,102,241,.12); }
+      #xi-info.xi-hidden { display: none; }
+
+      /* Scale widget compact — clicks must pass through to ElevenLabs */
+      #xi-widget-box {
+        transform: scale(0.78);
+        transform-origin: bottom right;
+        pointer-events: auto;   /* explicit: never block clicks */
+      }
+      #xi-widget-box * { pointer-events: auto; }
+      elevenlabs-convai { pointer-events: auto; }
+    </style>
+
+    <div id="xi-root" role="complementary" aria-label="AI HR Assistant widget">
+      <!-- ① Drag handle + role badge -->
+      <div id="xi-handle" aria-hidden="true">
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="currentColor">
+          <circle cx="2" cy="2" r="1.1"/><circle cx="7" cy="2" r="1.1"/>
+          <circle cx="2" cy="4.5" r="1.1"/><circle cx="7" cy="4.5" r="1.1"/>
+          <circle cx="2" cy="7" r="1.1"/><circle cx="7" cy="7" r="1.1"/>
+        </svg>
+        Drag to move
+        <span id="xi-role-badge">Employee</span>
+      </div>
+
+      <!-- ② Usage guide card -->
+      <div id="xi-guide" aria-label="AI assistant usage guide">
+        <div class="xi-guide-header">
+          <span id="xi-guide-title">🤖 AI HR Assistant</span>
+          <button id="xi-close" title="Dismiss" aria-label="Dismiss guide">✕</button>
+        </div>
+        <p id="xi-guide-desc">
+          Click the button below to start a conversation.
+          <strong>Drag this widget</strong> anywhere on screen if it covers content.
+        </p>
+        <div id="xi-guide-topics" aria-label="Supported topics">
+          <span class="xi-tag">📋 Leave policies</span>
+          <span class="xi-tag">🏢 Portal usage</span>
+          <span class="xi-tag">❓ HR FAQs</span>
+          <span class="xi-tag">📚 Training</span>
+          <span class="xi-tag">🏡 Remote work</span>
+        </div>
+        <p id="xi-guide-note">
+          <em>Try asking:</em> "How many leave days do I have?" ·
+          "How do I request remote work?"
+        </p>
+      </div>
+
+      <!-- ③ Re-open button (shown after guide dismissal) -->
+      <button id="xi-info" class="xi-hidden" title="Show guide" aria-label="Show usage guide">ⓘ</button>
+
+      <!-- ④ ElevenLabs widget (scaled compact) -->
+      <div id="xi-widget-box">
+        <elevenlabs-convai agent-id="agent_8301ky0689gjengrnbegfrartyjc"></elevenlabs-convai>
+      </div>
+    </div>
+
+    <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
+    <script>
+    (function () {
+      'use strict';
+      var root       = document.getElementById('xi-root');
+      var guide      = document.getElementById('xi-guide');
+      var info       = document.getElementById('xi-info');
+      var closeBtn   = document.getElementById('xi-close');
+      var roleBadge  = document.getElementById('xi-role-badge');
+      var guideTitle  = document.getElementById('xi-guide-title');
+      var guideDesc   = document.getElementById('xi-guide-desc');
+      var guideTopics = document.getElementById('xi-guide-topics');
+      var guideNote   = document.getElementById('xi-guide-note');
+
+      /* ── Role-based guide content ──────────────────────────────────────── */
+      var ROLE = {
+        employee: {
+          badge: 'Employee',
+          title: '🤖 AI HR Assistant',
+          desc:  'Ask about your leave balance, HR policies, portal usage, and guidelines. <strong>Drag this widget</strong> anywhere on screen.',
+          topics: ['📋 Leave policies', '🏢 Portal usage', '❓ HR FAQs', '📚 Training', '🏡 Remote work'],
+          note:  '"How many leave days do I have?" · "How do I request remote work?"',
+        },
+        manager: {
+          badge: 'Manager',
+          title: '🤖 Manager AI Assistant',
+          desc:  'Get team performance context, approval guidance, and HR policy answers. <strong>Drag this widget</strong> to reposition.',
+          topics: ['👥 Team analytics', '✅ Approvals', '📊 Performance', '📋 HR Policies', '❓ FAQs'],
+          note:  '"Show team burnout summary" · "What are the approval SLAs?"',
+        },
+        hr: {
+          badge: 'HR Admin',
+          title: '🤖 HR Admin Assistant',
+          desc:  'Access workforce insights, sentiment analytics, and HR admin workflows. <strong>Drag widget</strong> as needed.',
+          topics: ['📊 Workforce analytics', '💡 Employee insights', '🔧 Admin tools', '📋 Policies', '⚙️ Workflows'],
+          note:  '"Summarise burnout trends" · "Which employees have role drift?"',
+        },
+      };
+
+      function applyRole(role) {
+        var c = ROLE[role] || ROLE.employee;
+        if (roleBadge)  roleBadge.textContent = c.badge;
+        if (guideTitle) guideTitle.textContent = c.title;
+        if (guideDesc)  guideDesc.innerHTML    = c.desc;
+        if (guideTopics) {
+          guideTopics.innerHTML = c.topics
+            .map(function (t) { return '<span class="xi-tag">' + t + '</span>'; })
+            .join('');
+        }
+        if (guideNote) guideNote.innerHTML = '<em>Try asking:</em> ' + c.note;
+      }
+
+      /* ── Login / logout bridge ─────────────────────────────────────────── */
+
+      /*
+       * On login we:
+       *  1. Apply the role badge / guide copy immediately so the widget feels instant.
+       *  2. Fetch /api/session-context (role-scoped live data) from the backend.
+       *  3. Build a dense system-prompt string from the response.
+       *  4. Set it as `conversation-config-override` on the <elevenlabs-convai>
+       *     element BEFORE the user starts talking — this overrides the agent's
+       *     system prompt for this session so it knows the user's leave balance,
+       *     tasks, burnout score (employee: own data only; manager/hr: full team).
+       *
+       * Security boundary:
+       *  - role=employee  → /api/session-context returns ONLY that employee's data
+       *  - role=manager/hr → /api/session-context returns full team analytics
+       *  Both are enforced server-side; the client never chooses what data to omit.
+       */
+
+      /* Map role → employee name used by the demo (mock-auth) */
+      var ROLE_TO_NAME = { employee: 'Khalid Ibrahim', manager: '', hr: '' };
+
+      function injectAgentContext(role, name) {
+        var widget = document.querySelector('elevenlabs-convai');
+        if (!widget) return;
+
+        var badge = document.getElementById('xi-role-badge');
+        var prevBadge = badge ? badge.textContent : '';
+        if (badge) badge.textContent = '⏳ Connecting…';
+
+        var url = '/api/session-context?role=' + encodeURIComponent(role)
+          + (name ? '&name=' + encodeURIComponent(name) : '');
+
+        fetch(url)
+          .then(function (r) { return r.json(); })
+          .then(function (ctx) {
+            var override = buildConversationOverride(role, ctx);
+            widget.setAttribute('conversation-config-override', JSON.stringify(override));
+            if (badge) badge.textContent = prevBadge;
+          })
+          .catch(function (err) {
+            console.warn('[HR Insight] Agent context fetch failed:', err);
+            if (badge) badge.textContent = prevBadge;
+          });
+      }
+
+      /* Build the system-prompt + first-message override for the widget */
+      function buildConversationOverride(role, ctx) {
+        var lines = [], firstMsg = '';
+
+        if (role === 'employee' && ctx.user) {
+          var u  = ctx.user;
+          var m  = ctx.metrics  || {};
+          var lb = ctx.leave_balance || {};
+          var an = lb.annual    || {};
+          var sk = lb.sick      || {};
+          var em = lb.emergency || {};
+
+          var taskLines = (ctx.tasks || []).map(function (t) {
+            return '  • ' + t.title + ' — Due ' + t.due + ' | ' + t.status + ' | ' + t.priority;
+          }).join('\n');
+
+          var projLines = (ctx.projects || []).map(function (p) {
+            return '  • ' + p.name + ' (' + p.role + ', ' + p.commits + ' commits, ' + p.reports + ' reports)';
+          }).join('\n');
+
+          var recLines = (ctx.ai_recommendations || []).map(function (r, i) {
+            return '  ' + (i + 1) + '. ' + r;
+          }).join('\n');
+
+          var policyLines = (ctx.hr_policies || []).map(function (p) {
+            return '  ' + p.topic + ': ' + p.summary;
+          }).join('\n');
+
+          lines = [
+            'You are an AI HR assistant embedded in HR Insight (بصيرة الموارد البشرية), a bilingual HR analytics platform.',
+            '',
+            '══ CURRENT SESSION ══',
+            'User: ' + u.name_en + ' (' + u.name_ar + ')',
+            'Role: ' + u.role + ' | ' + u.department + ' Department',
+            'Access: EMPLOYEE — share ONLY this user\'s own data. Never reveal other employees\' scores, leave, tasks, or projects.',
+            '',
+            '══ PERSONAL METRICS ══',
+            'Burnout Score:       ' + m.burnout_score + '/100 (' + m.burnout_level + ')',
+            'Performance Score:   ' + m.performance_score + '/100',
+            'Contribution Streak: ' + m.contribution_streak + ' consecutive days',
+            '',
+            '══ LEAVE BALANCES ══',
+            'Annual Leave:    ' + an.remaining + ' days remaining (' + an.used + ' used of ' + an.total + ')',
+            'Sick Leave:      ' + sk.remaining + ' days available',
+            'Emergency Leave: ' + em.remaining + ' days available',
+            '',
+            '══ ACTIVE TASKS ══',
+            taskLines || '  No active tasks.',
+            '',
+            '══ CURRENT PROJECTS ══',
+            projLines || '  No current projects.',
+            '',
+            '══ AI RECOMMENDATIONS ══',
+            recLines || '  No recommendations.',
+            '',
+            '══ HR POLICIES ══',
+            policyLines,
+            '',
+            '══ INSTRUCTIONS ══',
+            '• Respond in whichever language the user writes in (English or Arabic).',
+            '• Be professional, warm, and concise.',
+            '• Never disclose any other employee\'s data, scores, tasks, or leave.',
+            '• For in-person support: hrsupport@company.com.',
+            '• When asked about leave: confirm type (annual/sick/emergency), dates, and whether manager approval is arranged.',
+          ];
+
+          /* First message: greet by first name + surface most urgent item */
+          var urgent = (ctx.tasks || []).find(function (t) {
+            return t.priority === 'High' || t.status === 'Action Required';
+          });
+          var urgentHint = urgent
+            ? ' Your most urgent item: "' + urgent.title + '" (due ' + urgent.due + ').'
+            : '';
+          var burnoutAlert = m.burnout_level === 'High'
+            ? ' ⚠️ Your burnout score is High (' + m.burnout_score + '/100) — let\'s discuss workload.'
+            : '';
+
+          firstMsg = 'Hello ' + u.name_en.split(' ')[0] + '! 👋 '
+            + 'Leave balance: ' + an.remaining + ' days annual, ' + sk.remaining + ' sick, ' + em.remaining + ' emergency.'
+            + urgentHint + burnoutAlert
+            + ' How can I help you today?';
+
+        } else {
+          /* manager or hr — full team analytics */
+          var ts   = ctx.team_summary || {};
+          var emps = ctx.employees    || [];
+
+          var alertLines = (ctx.burnout_alerts || []).map(function (a) {
+            return '  🔴 ' + a.employee + ' (' + a.role + ', ' + a.department + '): ' + a.burnout + '\n     → ' + a.summary;
+          }).join('\n');
+
+          var innovLines = (ctx.top_innovators || []).map(function (n) {
+            return '  🔥 ' + n.employee + ' — ' + n.role + ', ' + n.department;
+          }).join('\n');
+
+          var empLines = emps.map(function (e) {
+            return '  • ' + e.name_en + ' (' + e.role_en + ', ' + e.department
+              + ') — Burnout: ' + e.burnout + (e.innovator ? ' 🔥' : '') + '\n'
+              + '    Projects: ' + (e.projects || []).join('; ') + '\n'
+              + '    ' + e.summary;
+          }).join('\n');
+
+          var deptLines = (ctx.departments || []).map(function (d) {
+            return '  • ' + d.name + ': ' + d.headcount
+              + ' employees (' + d.burnout_high + ' burnout-high, ' + d.innovators + ' innovators)';
+          }).join('\n');
+
+          var projLines2 = (ctx.projects || []).map(function (p) {
+            return '  • ' + p.name + ' — ' + p.status + ' — ' + p.total_commits + ' commits — ' + p.contributors + ' contributors';
+          }).join('\n');
+
+          var policyLines2 = (ctx.hr_policies || []).map(function (p) {
+            return '  ' + p.topic + ': ' + p.summary;
+          }).join('\n');
+
+          var accessLabel = role === 'hr'
+            ? 'HR ADMIN — Full workforce analytics access'
+            : 'MANAGER — Executive team analytics access';
+
+          lines = [
+            'You are an AI HR admin assistant embedded in HR Insight (بصيرة الموارد البشرية).',
+            '',
+            '══ CURRENT SESSION ══',
+            'Access Level: ' + accessLabel,
+            '',
+            '══ TEAM SUMMARY ══',
+            'Total Employees:          ' + (ts.total_employees  || 6),
+            'Burnout High (Alerts):    ' + (ts.burnout_high_count || 0),
+            'Top Innovators:           ' + (ts.innovator_count   || 0),
+            'Active Projects:          ' + (ts.active_projects   || 0),
+            'Departments:              ' + (ts.departments       || 4),
+            '',
+            '══ BURNOUT ALERTS ══',
+            alertLines || '  No high-burnout cases.',
+            '',
+            '══ TOP INNOVATORS ══',
+            innovLines || '  None flagged.',
+            '',
+            '══ FULL EMPLOYEE LIST ══',
+            empLines,
+            '',
+            '══ DEPARTMENTS ══',
+            deptLines,
+            '',
+            '══ PROJECTS ══',
+            projLines2,
+            '',
+            '══ HR POLICIES ══',
+            policyLines2,
+            '',
+            '══ INSTRUCTIONS ══',
+            '• Respond in whichever language the user writes in (English or Arabic).',
+            '• Present burnout scores and innovator flags professionally and constructively.',
+            '• Always ground recommendations in HR policy.',
+            '• For legal or medical matters, recommend the appropriate specialist.',
+            '• Suggest concrete next steps: schedule 1:1, redistribute tasks, review scope.',
+          ];
+
+          var alertCount = ts.burnout_high_count || 0;
+          var alertNames = (ctx.burnout_alerts || []).map(function (a) {
+            return a.employee.split(' ')[0];
+          }).join(' & ');
+
+          firstMsg = 'Hello! 👋 Today\'s snapshot: '
+            + alertCount + ' burnout alert' + (alertCount !== 1 ? 's' : '')
+            + (alertCount > 0 ? ' (' + alertNames + ')' : '')
+            + ', ' + (ts.innovator_count || 0) + ' top innovators'
+            + ', ' + (ts.active_projects || 0) + ' active projects.'
+            + ' What would you like to explore?';
+        }
+
+        return {
+          agent: {
+            prompt: { prompt: lines.join('\n') },
+            first_message: firstMsg,
+          },
+        };
+      }
+
+      window.addEventListener('xi:login', function (e) {
+        var role = (e.detail && e.detail.role) || 'employee';
+        var name = (e.detail && e.detail.name) || ROLE_TO_NAME[role] || '';
+        applyRole(role);
+        root.style.display = 'flex';
+        injectAgentContext(role, name);
+      });
+
+      window.addEventListener('xi:logout', function () {
+        root.style.display = 'none';
+        // Reset drag position
+        root.style.left = ''; root.style.top = '';
+        root.style.right = '24px'; root.style.bottom = '24px';
+        // Clear the context override so the next login gets a fresh prompt
+        var widget = document.querySelector('elevenlabs-convai');
+        if (widget) widget.removeAttribute('conversation-config-override');
+      });
+
+      /* ── Guide dismiss / restore ───────────────────────────────────────── */
+      var KEY = 'xi-guide-v2';
+      function dismissGuide() {
+        guide.classList.add('xi-hidden');
+        info.classList.remove('xi-hidden');
+        try { localStorage.setItem(KEY, '1'); } catch (e) {}
+      }
+      function showGuide() {
+        guide.classList.remove('xi-hidden');
+        info.classList.add('xi-hidden');
+        try { localStorage.removeItem(KEY); } catch (e) {}
+      }
+      closeBtn.addEventListener('click', function (e) { e.stopPropagation(); dismissGuide(); });
+      info.addEventListener('click',     function (e) { e.stopPropagation(); showGuide(); });
+      try { if (localStorage.getItem(KEY)) dismissGuide(); } catch (e) {}
+
+      /* ── Drag (pointer events — click-safe) ────────────────────────────── */
+      /*
+       * CRITICAL: setPointerCapture must NOT fire on pointerdown.
+       * Capturing immediately steals all events from the ElevenLabs shadow DOM,
+       * making the widget button unclickable. Instead we:
+       *  1. Record the start position on pointerdown (no capture yet).
+       *  2. Only commit to a drag in pointermove once movement exceeds THRESHOLD.
+       *  3. Never intercept events that originate inside #xi-widget-box.
+       */
+      var DRAG_THRESHOLD = 6;   // px of movement before drag mode engages
+      var pending = false;      // pointerdown registered, awaiting movement decision
+      var dragging = false;     // drag mode active (capture acquired)
+      var capturedId = -1;
+      var startX = 0, startY = 0, origLeft = 0, origTop = 0;
+
+      root.addEventListener('pointerdown', function (e) {
+        /* Never intercept clicks on the guide card, ⓘ button, or the widget itself */
+        if (e.target.closest && (
+          e.target.closest('#xi-guide')      ||
+          e.target.closest('#xi-info')       ||
+          e.target.closest('#xi-widget-box') ||   /* ← widget stays fully clickable */
+          e.target.closest('elevenlabs-convai')
+        )) return;
+
+        pending = true;
+        dragging = false;
+        capturedId = e.pointerId;
+        var r = root.getBoundingClientRect();
+        origLeft = r.left; origTop = r.top;
+        startX = e.clientX; startY = e.clientY;
+      });
+
+      root.addEventListener('pointermove', function (e) {
+        if (!pending || e.pointerId !== capturedId) return;
+        var dx = e.clientX - startX;
+        var dy = e.clientY - startY;
+
+        if (!dragging) {
+          /* Ignore tiny jitter; only commit once threshold is crossed */
+          if (Math.abs(dx) < DRAG_THRESHOLD && Math.abs(dy) < DRAG_THRESHOLD) return;
+          /* Threshold crossed — commit to drag now */
+          dragging = true;
+          root.setPointerCapture(e.pointerId);   /* capture only after real movement */
+          root.classList.add('xi-dragging');
+          root.style.right  = 'auto';
+          root.style.bottom = 'auto';
+          root.style.left   = origLeft + 'px';
+          root.style.top    = origTop  + 'px';
+        }
+
+        var nl = origLeft + dx;
+        var nt = origTop  + dy;
+        nl = Math.max(0, Math.min(window.innerWidth  - root.offsetWidth,  nl));
+        nt = Math.max(0, Math.min(window.innerHeight - root.offsetHeight, nt));
+        root.style.left = nl + 'px';
+        root.style.top  = nt + 'px';
+      });
+
+      function endDrag() {
+        pending  = false;
+        dragging = false;
+        root.classList.remove('xi-dragging');
+      }
+      root.addEventListener('pointerup',     endDrag);
+      root.addEventListener('pointercancel', endDrag);
+    })();
+    </script>
+  </body>
+</html>
