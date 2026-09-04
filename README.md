@@ -56,6 +56,7 @@
 
 * **Gold Rating (التصنيف الذهبي):** Evaluated and awarded the prestigious **Gold Tier** rating at the **Kanz Hackathon** (out of Gold, Silver, and Bronze tiers), recognizing technical execution, architectural robustness, and real-world AI impact.
 * **Guinness World Records Participant:** Official participant in the historic record set during the Kanz Hackathon—recognized globally as the world's largest hackathon.
+* 
   * 📜 [View Official Guinness World Records Certificate](https://try.ka.nz/certificate/KANZ-GWR-738BBDEFCD?certificate_type=gwr2&recipient_name=%D8%AD%D9%86%D8%A7%D9%86+%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%84%D9%87&issue_date=July+15%2C+2026&certificate_id=KANZ-GWR-738BBDEFCD&lang=ar)
   * 👤 [View Kanz Platform Profile](https://try.ka.nz/ai/hananeabdallah)
 
