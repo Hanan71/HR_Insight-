@@ -8,13 +8,14 @@
         </p>
       </td>
       <td align="center" valign="middle">
-        <img width="300" alt="HR Insight Logo" src="https://github.com/user-attachments/assets/23e02e94-7a13-46ce-8173-4c937d7b2ddf" />
+        <img width="260" alt="HR Insight Logo" src="https://github.com/user-attachments/assets/23e02e94-7a13-46ce-8173-4c937d7b2ddf" />
       </td>
     </tr>
   </table>
+
+  <br>
+  <img width="380" alt="HR Insight Showcase" src="https://github.com/user-attachments/assets/bc5f690c-58a7-4c1b-a3c3-c8d7816f9abd" />
 </div>
-
-
 
 
 
