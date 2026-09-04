@@ -1,11 +1,18 @@
 <div align="center">
-
-#  HR Insight | بصيرة الموارد البشرية ✨ 
-
-<p align="center">
-  <b>An AI-powered HR intelligence platform designed to assess employee well-being, mitigate burnout, and optimize workforce roles.</b>
-</p>
-
+  <table border="0">
+    <tr>
+      <td align="center" valign="middle">
+        <h1 style="margin: 0;">HR Insight | بصيرة الموارد البشرية ✨</h1>
+        <p style="margin: 8px 0 0 0;">
+          <b>An AI-powered HR intelligence platform designed to assess employee well-being, mitigate burnout, and optimize workforce roles.</b>
+        </p>
+      </td>
+      <td align="center" valign="middle">
+        <img width="300" alt="HR Insight Logo" src="https://github.com/user-attachments/assets/bc5f690c-58a7-4c1b-a3c3-c8d7816f9abd" />
+      </td>
+    </tr>
+  </table>
+</div>
 
 ---
 
