@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Outfit", sans-serif;
+  --font-arabic: "Cairo", sans-serif;
+
+  --color-zinc-950: #09090b;
+  --color-zinc-900: #18181b;
+  --color-zinc-800: #27272a;
+  --color-zinc-400: #a1a1aa;
+
+  --color-indigo-500: #6366f1;
+  --color-violet-500: #8b5cf6;
+  --color-emerald-500: #10b981;
+  --color-amber-500: #f59e0b;
+
+  --color-indigo-glow: rgba(99, 102, 241, 0.5);
+  --color-violet-glow: rgba(139, 92, 246, 0.5);
+  --color-amber-glow: rgba(245, 158, 11, 0.5);
+  --color-emerald-glow: rgba(16, 185, 129, 0.5);
+}
+
+@layer base {
+  :root {
+    --bg-dark: #09090b;
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1aa;
+    --glass-bg: rgba(24, 24, 27, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
+
+  body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    margin: 0;
+    overflow: hidden;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+
+  .text-glow-indigo {
+    text-shadow: 0 0 20px var(--color-indigo-glow);
+  }
+
+  .text-glow-amber {
+    text-shadow: 0 0 20px var(--color-amber-glow);
+  }
+
+  .text-glow-emerald {
+    text-shadow: 0 0 20px var(--color-emerald-glow);
+  }
+
+  .font-arabic {
+    font-family: var(--font-arabic);
+  }
+}
